@@ -7,7 +7,7 @@
         "pool": "{{user `proxmox_vm_pool`}}",
         "username": "{{ user `proxmox_username` }}",
         "password": "{{ user `proxmox_password` }}",
-        "vm_name": "WindowsServer2016",
+        "vm_name": "WindowsServer2022",
         "node": "{{user `proxmox_node`}}",
         "sockets": 1,
         "cores": 2,  
@@ -35,9 +35,9 @@
           "memory": 256
         },
         "scsi_controller": "virtio-scsi-pci",
-        "iso_url": "https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO",
+        "iso_url": "https://software-static.download.prss.microsoft.com/sg/download/888969d5-f34g-4e03-ac9d-1f9786c66749/SERVER_EVAL_x64FRE_en-us.iso",
         "iso_storage_pool": "{{user `proxmox_iso_storage_pool`}}",
-        "iso_checksum": "70721288BBCDFE3239D8F8C0FAE55F1F",
+        "iso_checksum": "E7908933449613EDC97E1B11180429D1",
         "boot_wait": "2m",
         "boot": "order=scsi0;ide2",
         "additional_iso_files": [
@@ -62,8 +62,8 @@
         "winrm_timeout": "4h",
         "qemu_agent": true,
         "unmount_iso": true,
-        "template_name": "WindowsServer2016",
-        "template_description": "Windows Server 2016, generated on {{ isotime \"2006-01-02T15:04:05Z\" }}"
+        "template_name": "WindowsServer2022",
+        "template_description": "Windows Server 2022, generated on {{ isotime \"2006-01-02T15:04:05Z\" }}"
       }
     ],
     "provisioners": [
@@ -72,13 +72,13 @@
         "remote_path": "/tmp/script.bat",
         "execute_command": "{{ .Vars }} cmd /c \"{{ .Path }}\"",
         "scripts": [
-          "../../Packer/scripts/enable-rdp.bat"
+          "./scripts/enable-rdp.bat"
         ]
       },
       {
         "type": "powershell",
         "scripts": [
-          "../../Packer/scripts/debloat-windows.ps1"
+          "./scripts/debloat-windows.ps1"
         ]
       },
       {
@@ -90,11 +90,11 @@
         "execute_command": "{{ .Vars }} cmd /c \"{{ .Path }}\"",
         "scripts": [
           "{{template_dir}}/scripts/pin-powershell-cdrom.bat",
-          "../../Packer/scripts/set-winrm-automatic.bat",
-          "../../Packer/scripts/compile-dotnet-assemblies.bat",
-          "../../Packer/scripts/uac-enable.bat",
-          "../../Packer/scripts/compact.bat",
-          "{{template_dir}}/scripts/sysprep-cdrom.bat"
+          "./scripts/set-winrm-automatic.bat",
+          "./scripts/compile-dotnet-assemblies.bat",
+          "./scripts/uac-enable.bat",
+          "./scripts/compact.bat",
+          "./scripts/sysprep-cdrom.bat"
       ]
     }
   ]
